@@ -3,12 +3,11 @@ import { useEffect, useState } from "react";
 function App() {
   const [dogs, setDogs] = useState([]);
   const [breedFilter, setBreedFilter] = useState("");
-  const [sortByBreed, setSortByBreed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchAllDogsWithBreeds = async () => {
+    const fetchAllDogs = async () => {
       try {
         setLoading(true);
         setError(null);
@@ -16,7 +15,7 @@ function App() {
         
         const breedsResponse = await fetch("https://dog.ceo/api/breeds/list/all");
         const breedsData = await breedsResponse.json();
-        // Objects.keys les noms des races en objet json
+        // Objects.keys extrait les noms des races su json
         const breedList = Object.keys(breedsData.message);
         
         console.log(` ${breedList.length} races trouvées`);
@@ -33,15 +32,14 @@ function App() {
             if (imageData.status === "success") {
               return {
                 id: breed,
-                //mais la première lettre en majuscule
+                //mais la première lettre en majuscule du nom races de chiens 
                 breed: breed[0].toUpperCase() + breed.slice(1),
                 image: imageData.message,
-                habitat: "Domestique"
               };
             }
             return null;
           } catch (error) {
-            console.log(` Race ${breed} indisponible`);
+            console.log(` Race ${breed} indisponible ` + error);
             return null;
           }
         });
@@ -58,24 +56,23 @@ function App() {
       }
     };
 
-    fetchAllDogsWithBreeds();
+    fetchAllDogs();
   }, []);
 
-  const safeDogs = Array.isArray(dogs) ? dogs : [];
-  const filteredDogs = safeDogs.filter((dog) =>
+  const findedDogs = Array.isArray(dogs) ? dogs : [];
+
+  const filteredDogs = findedDogs.filter((dog) =>
     dog.breed.toLowerCase().includes(breedFilter.toLowerCase())
   );
-  const sortedDogs = [...filteredDogs].sort((a, b) =>
-    a.breed.localeCompare(b.breed)
-  );
-  const toDisplay = sortByBreed ? sortedDogs : filteredDogs;
+  
+  const displayDogs =  filteredDogs;
 
   return (
     <div className="dog-app">
-      <h1>🐕 Toutes les Races de Chiens</h1>
+      <h1>🐕 API sur les Chiens</h1>
       
       <div className="app-info">
-        Dog CEO API - {toDisplay.length} / {safeDogs.length} races affichées
+        Dog CEO API - {displayDogs.length} / {findedDogs.length} races affichées
       </div>
 
       <div className="controls">
@@ -89,22 +86,13 @@ function App() {
           />
         </label>
 
-        <button 
-          className="sort-btn"
-          onClick={() => setSortByBreed((prev) => !prev)}
-        >
-          {sortByBreed ? "🔽 Désactiver tri" : "🔼 Trier par race"}
-        </button>
       </div>
 
-      {loading && <p className="loading">⏳ Chargement de toutes les races ({safeDogs.length} trouvées)...</p>}
+      {loading && <p className="loading">⏳ Chargement de toutes les races ({findedDogs.length} trouvées)...</p>}
       {error && <p className="error"> {error}</p>}
-      {toDisplay.length === 0 && !loading && !error && (
-        <p className="empty-state">Tape une race : "labrador", "husky"... 🐶</p>
-      )}
 
       <div className="dogs-grid">
-        {toDisplay.map((dog) => (
+        {displayDogs.map((dog) => (
           <div key={dog.id} className="dog-card">
             <img 
               src={dog.image} 
@@ -112,19 +100,12 @@ function App() {
               className="dog-image"
             />
             <h3 className="dog-breed">{dog.breed}</h3>
-            <div className="dog-habitat">🏠 {dog.habitat}</div>
           </div>
         ))}
       </div>
 
       <div className="stats">
-        <p>📊 {toDisplay.length} / {safeDogs.length} races (sur ~200 possibles)</p>
-        <button 
-          className="refresh-btn"
-          onClick={() => window.location.reload()}
-        >
-          🔄 Recharger toutes les races
-        </button>
+        <p>📊 {displayDogs.length} / {findedDogs.length} races </p>
       </div>
     </div>
   );
