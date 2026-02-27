@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import ScrollToTop from "./ScrollToTop/ScrollToTop";
 
 function App() {
   const [dogs, setDogs] = useState([]);
@@ -107,6 +108,7 @@ function App() {
       <div className="stats">
         <p>📊 {displayDogs.length} / {findedDogs.length} races </p>
       </div>
+      <ScrollToTop />
     </div>
   );
 }
