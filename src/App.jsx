@@ -16,7 +16,7 @@ function App() {
         
         const breedsResponse = await fetch("https://dog.ceo/api/breeds/list/all");
         const breedsData = await breedsResponse.json();
-        // Objects.keys extrait les noms des races su json
+        // Objects.keys extrait les noms des races sur json
         const breedList = Object.keys(breedsData.message);
         
         console.log(` ${breedList.length} races trouvées`);
