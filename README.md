@@ -12,6 +12,7 @@ L’utilisateur peut filtrer les races selon un mot-clé (ex : *husky*, *labrado
 - 💬 Filtrage en temps réel grâce à une barre de recherche  
 - 💫 Interface moderne, responsive et animée  
 - ⚠️ Gestion complète du chargement, des erreurs et de l’affichage  
+- ⬆️ Remonter en haut de page 
 
 ---
 
