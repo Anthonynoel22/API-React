@@ -1,6 +1,6 @@
 # 🐕 API-Dog
 
-Une application **React** simple et esthétique qui affiche des images aléatoires de toutes les races de chiens grâce à l’API publique Dog CEO.  
+Une application **React** simple et esthétique qui affiche des images aléatoires de 108 races de chiens grâce à l’API publique Dog CEO.  
 L’utilisateur peut filtrer les races selon un mot-clé (ex : *husky*, *labrador*, *bulldog*).
 
 ---
